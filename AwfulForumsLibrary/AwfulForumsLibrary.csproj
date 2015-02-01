@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{02DB53CB-7539-4EC0-A7CF-36070640193F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AwfulForumsLibrary</RootNamespace>
+    <AssemblyName>AwfulForumsLibrary</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <NuGetPackageImportStamp>733160d5</NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Entity\BbCodeCategoryEntity.cs" />
+    <Compile Include="Entity\ForumCategoryEntity.cs" />
+    <Compile Include="Entity\ForumEntity.cs" />
+    <Compile Include="Entity\ForumPostEntity.cs" />
+    <Compile Include="Entity\ForumReplyEntity.cs" />
+    <Compile Include="Entity\ForumThreadEntity.cs" />
+    <Compile Include="Entity\ForumUserEntity.cs" />
+    <Compile Include="Entity\ImgurEntity.cs" />
+    <Compile Include="Entity\NewPrivateMessageEntity.cs" />
+    <Compile Include="Entity\NewThreadEntity.cs" />
+    <Compile Include="Entity\PostIconCategoryEntity.cs" />
+    <Compile Include="Entity\PostIconEntity.cs" />
+    <Compile Include="Entity\PrivateMessageEntity.cs" />
+    <Compile Include="Entity\SaclopediaEntity.cs" />
+    <Compile Include="Entity\SaclopediaNavigationEntity.cs" />
+    <Compile Include="Entity\SaclopediaNavigationTopicEntity.cs" />
+    <Compile Include="Entity\SearchEntity.cs" />
+    <Compile Include="Entity\SmileCategoryEntity.cs" />
+    <Compile Include="Exceptions\ForumListParsingFailedException.cs" />
+    <Compile Include="Exceptions\LoginFailedException.cs" />
+    <Compile Include="Exceptions\WebManagerException.cs" />
+    <Compile Include="Interface\IAuthenticationManager.cs" />
+    <Compile Include="Interface\ILocalStorageManager.cs" />
+    <Compile Include="Interface\IWebManager.cs" />
+    <Compile Include="Manager\AuthenticationManager.cs" />
+    <Compile Include="Manager\BbCodeManager.cs" />
+    <Compile Include="Manager\ForumManager.cs" />
+    <Compile Include="Manager\ForumUserManager.cs" />
+    <Compile Include="Manager\LocalStorageManager.cs" />
+    <Compile Include="Manager\PostIconManager.cs" />
+    <Compile Include="Manager\PostManager.cs" />
+    <Compile Include="Manager\PrivateMessageManager.cs" />
+    <Compile Include="Manager\ReplyManager.cs" />
+    <Compile Include="Manager\SaclopediaManager.cs" />
+    <Compile Include="Manager\SearchManager.cs" />
+    <Compile Include="Manager\SmileManager.cs" />
+    <Compile Include="Manager\ThreadManager.cs" />
+    <Compile Include="Manager\WebManager.cs" />
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools\Constants.cs" />
+    <Compile Include="Tools\CookieSerializer.cs" />
+    <Compile Include="Tools\Extensions.cs" />
+    <Compile Include="Tools\PlatformIdentifier.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="HtmlAgilityPack-PCL">
+      <HintPath>..\packages\HtmlAgilityPack-PCL.1.4.6\lib\HtmlAgilityPack-PCL.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\portable-net45+wp80+win8+wpa81+aspnetcore50\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PCLStorage">
+      <HintPath>..\packages\PCLStorage.1.0.2\lib\portable-net45+wp8+wpa81+win8+monoandroid+monotouch+Xamarin.iOS+Xamarin.Mac\PCLStorage.dll</HintPath>
+    </Reference>
+    <Reference Include="PCLStorage.Abstractions">
+      <HintPath>..\packages\PCLStorage.1.0.2\lib\portable-net45+wp8+wpa81+win8+monoandroid+monotouch+Xamarin.iOS+Xamarin.Mac\PCLStorage.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="PropertyChanged">
+      <HintPath>..\packages\PropertyChanged.Fody.1.49.0\Lib\portable-net4+sl4+wp8+win8+wpa81+MonoAndroid16+MonoTouch40\PropertyChanged.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FodyWeavers.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <Import Project="..\packages\Fody.1.26.4\build\Fody.targets" Condition="Exists('..\packages\Fody.1.26.4\build\Fody.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Fody.1.26.4\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.1.26.4\build\Fody.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
