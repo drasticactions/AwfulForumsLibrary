@@ -42,6 +42,7 @@ namespace AwfulForumsLibrary.Manager
             {
                 IEnumerable<HtmlNode> forumNodes = forumNode.Descendants("option");
                 var parentId = 0;
+                var order = 1;
                 foreach (HtmlNode node in forumNodes)
                 {
                     string value = node.Attributes["value"].Value;
@@ -61,7 +62,7 @@ namespace AwfulForumsLibrary.Manager
                             Location = string.Format(Constants.ForumPage, value),
                             IsSubforum = isSubforum,
                             ForumCategory = forumCategory,
-                            CategoryId = forumCategory.CategoryId
+                            ForumCategoryEntityId = forumCategory.Id
                         };
                         SetForumId(forumSubCategory);
                         if (!isSubforum)
@@ -82,9 +83,11 @@ namespace AwfulForumsLibrary.Manager
                         {
                             Name = forumName,
                             Location = string.Format(Constants.ForumPage, value),
-                            CategoryId = Convert.ToInt32(value),
+                            Id = Convert.ToInt32(value),
+                            Order = order,
                             ForumList = new List<ForumEntity>()
                         };
+                        order++;
                         forumGroupList.Add(forumGroup);
                     }
                 }

@@ -1,4 +1,6 @@
 ﻿using PropertyChanged;
+using SQLite.Net.Attributes;
+using SQLiteNetExtensions.Attributes;
 
 namespace AwfulForumsLibrary.Entity
 {
@@ -17,15 +19,20 @@ namespace AwfulForumsLibrary.Entity
 
         public int TotalPages { get; set; }
 
+        [PrimaryKey]
         public int ForumId { get; set; }
 
-        public int CategoryId { get; set; }
+        [ForeignKey(typeof(ForumCategoryEntity))]
+        public int ForumCategoryEntityId { get; set; }
 
+        [ForeignKey(typeof(ForumEntity))]
         public int ParentForumId { get; set; }
 
-        public virtual ForumEntity ParentForum { get; set; }
+        [ManyToOne]
+        public ForumEntity ParentForum { get; set; }
 
-        public virtual ForumCategoryEntity ForumCategory { get; set; }
+        [ManyToOne]
+        public ForumCategoryEntity ForumCategory { get; set; }
 
         public bool IsBookmarks { get; set; }
     }

@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using SQLite.Net.Attributes;
+using SQLiteNetExtensions.Attributes;
 
 namespace AwfulForumsLibrary.Entity
 {
@@ -8,15 +10,21 @@ namespace AwfulForumsLibrary.Entity
         {
             ForumList = new List<ForumEntity>();
         }
+
         public string Name { get; set; }
 
         public string Location { get; set; }
 
-        public int CategoryId { get; set; }
+        [PrimaryKey]
+        public int Id { get; set; }
+
+        public int Order { get; set; }
 
         /// <summary>
         ///     The forums that belong to that category (Ex. GBS, FYAD)
         /// </summary>
-        public virtual ICollection<ForumEntity> ForumList { get; set; }
+        /// 
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public List<ForumEntity> ForumList { get; set; }
     }
 }

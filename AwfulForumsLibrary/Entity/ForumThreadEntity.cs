@@ -2,14 +2,14 @@
 using System.Collections.ObjectModel;
 using AwfulForumsLibrary.Tools;
 using PropertyChanged;
+using SQLite.Net.Attributes;
+using SQLiteNetExtensions.Attributes;
 
 namespace AwfulForumsLibrary.Entity
 {
     [ImplementPropertyChanged]
     public class ForumThreadEntity
     {
-        public Guid Id { get; set; }
-
         public string Name { get; set; }
 
         public string Location { get; set; }
@@ -50,12 +50,15 @@ namespace AwfulForumsLibrary.Entity
 
         public string ScrollToPostString { get; set; }
 
+        [PrimaryKey]
         public long ThreadId { get; set; }
 
+        [ForeignKey(typeof(ForumEntity))]
         public int ForumId { get; set; }
 
         public bool HasSeen { get; set; }
 
+        [ManyToOne]
         public virtual ForumEntity ForumEntity { get; set; }
 
         public bool IsBookmark { get; set; }
