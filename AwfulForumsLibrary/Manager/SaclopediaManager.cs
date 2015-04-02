@@ -70,6 +70,11 @@ namespace AwfulForumsLibrary.Manager
                 saclopediaEntity.Title = forumNode.InnerHtml;
                 forumNode = result.Document.DocumentNode.Descendants("ul")
                         .FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Equals("posts"));
+                foreach (var node in forumNode.Descendants("li"))
+                {
+                    GetAuthorInformation(saclopediaEntity, node);
+                }
+
                 saclopediaEntity.Body = forumNode.OuterHtml;
                 return saclopediaEntity;
             }
@@ -77,6 +82,30 @@ namespace AwfulForumsLibrary.Manager
             {
                 throw new Exception("Failed to parse entry", ex);
             }
+        }
+
+        private void GetAuthorInformation(SaclopediaEntity saclopediaEntity, HtmlNode forumNode)
+        {
+            var bylineNode =
+                forumNode.Descendants("p")
+                    .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("byline"));
+
+            var authorNode = bylineNode?.Descendants("a").FirstOrDefault();
+
+            if (authorNode == null)
+            {
+                return;
+            }
+
+            saclopediaEntity.Author = authorNode.InnerText;
+            var querystring = Extensions.ParseQueryString(authorNode.GetAttributeValue("href", string.Empty));
+            saclopediaEntity.UserId = Convert.ToInt32(querystring["amp;userid"]);
+
+            var test = bylineNode.InnerText.Split(new[] { "on" }, StringSplitOptions.None);
+            saclopediaEntity.PostedDate = test.LastOrDefault();
+            saclopediaEntity.FormattedBody = forumNode.Descendants("p")
+                .LastOrDefault().OuterHtml;
+
         }
 
         private SaclopediaNavigationTopicEntity CreateNavigationTopicEntity(HtmlNode navNode)
