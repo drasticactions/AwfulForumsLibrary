@@ -115,6 +115,9 @@ namespace AwfulForumsLibrary.Manager
                 navNode.Descendants("a").First();
             navEntity.Topic = WebUtility.HtmlDecode(resultNode.InnerText);
             navEntity.Link = WebUtility.HtmlDecode(resultNode.GetAttributeValue("href", string.Empty));
+            var query =
+                Extensions.ParseQueryString(WebUtility.HtmlDecode(resultNode.GetAttributeValue("href", string.Empty)));
+            navEntity.Id = Convert.ToInt32(query["topicid"]);
             return navEntity;
         }
 
@@ -126,6 +129,9 @@ namespace AwfulForumsLibrary.Manager
                 navNode.Descendants("a").First();
             navEntity.Letter = WebUtility.HtmlDecode(resultNode.InnerText);
             navEntity.Link = WebUtility.HtmlDecode(resultNode.GetAttributeValue("href", string.Empty));
+            var query =
+                Extensions.ParseQueryString(WebUtility.HtmlDecode(resultNode.GetAttributeValue("href", string.Empty)));
+            navEntity.Id = Convert.ToInt32(query["l"]);
             return navEntity;
         }
 
