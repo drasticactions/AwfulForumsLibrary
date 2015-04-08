@@ -40,6 +40,10 @@ namespace AwfulForumsLibrary.Entity
 
         public bool IsMod { get;  set; }
 
+        public bool IsAdmin { get; set; }
+
+        public string Roles { get; set; }
+
         public bool IsCurrentUserPost { get; set; }
 
         public long Id { get;  set; }

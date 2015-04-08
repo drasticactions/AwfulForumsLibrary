@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -34,6 +35,25 @@ namespace AwfulForumsLibrary.Manager
                             .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("author"))
                             .InnerHtml)
             };
+
+            try
+            {
+                user.Roles = postNode.Descendants("dt")
+                .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("author"))
+                .GetAttributeValue("class", string.Empty);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Error getting roles", ex);
+                // This "should" never fail, but... yeah. I'm a dumb dumb :(
+            }
+
+            user.IsMod = postNode.Descendants("dt")
+                .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("role-mod")) != null;
+
+            user.IsAdmin = postNode.Descendants("dt")
+                .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("role-admin")) != null;
+
             var dateTimeNode = postNode.Descendants("dd")
                 .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("registered"));
             if (dateTimeNode != null)
