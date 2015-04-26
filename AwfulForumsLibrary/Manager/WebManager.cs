@@ -46,6 +46,33 @@ namespace AwfulForumsLibrary.Manager
             get { return NetworkInterface.GetIsNetworkAvailable(); }
         }
 
+        public async Task<Result> PostArchiveData(string uri, string data)
+        {
+            var request = (HttpWebRequest)WebRequest.Create(uri);
+            request.Accept = Accept;
+            request.CookieContainer = await _localStorageManager.LoadCookie(Constants.CookieFile);
+            request.Method = "POST";
+            request.ContentType = PostContentType;
+            request.UseDefaultCredentials = false;
+
+            using (var writer = new StreamWriter(await request.GetRequestStreamAsync()))
+            {
+                writer.Write(data);
+            }
+
+            WebResponse response = await request.GetResponseAsync();
+            using (Stream responseStream = response.GetResponseStream())
+            {
+                using (var reader = new StreamReader(responseStream))
+                {
+                    string html = reader.ReadToEnd();
+                    var doc = new HtmlDocument();
+                    doc.LoadHtml(html);
+                    return new Result(doc, request.RequestUri.AbsoluteUri);
+                }
+            }
+        }
+
         public async Task<CookieContainer> PostData(string url, string data)
         {
             var uri = new Uri(url);

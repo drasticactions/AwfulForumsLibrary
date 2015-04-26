@@ -173,6 +173,28 @@ namespace AwfulForumsLibrary.Manager
             return forumThreadList;
         }
 
+        public async Task<ObservableCollection<ForumThreadEntity>> GetArchiveForumThreadsAsync(
+    ForumEntity forumCategory, int page, int day, int month, int year)
+        {
+            var url = forumCategory.Location + string.Format(Constants.PageNumber, page);
+            var doc = (await _webManager.PostArchiveData(url, $"ac_month={day}&ac_day={month}&ac_year={year}&set=GO")).Document;
+            var forumNode =
+                doc.DocumentNode.Descendants()
+                    .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("threadlist"));
+            var forumThreadList = new ObservableCollection<ForumThreadEntity>();
+            foreach (
+                var threadNode in
+                    forumNode.Descendants("tr")
+                        .Where(node => node.GetAttributeValue("class", string.Empty).StartsWith("thread")))
+            {
+                var threadEntity = new ForumThreadEntity { ForumId = forumCategory.ForumId, ForumEntity = forumCategory };
+                ParseThreadHtml(threadEntity, threadNode);
+                forumThreadList.Add(threadEntity);
+            }
+
+            return forumThreadList;
+        }
+
         public async Task<NewThreadEntity> GetThreadCookiesAsync(long forumId)
         {
             try
@@ -392,7 +414,7 @@ namespace AwfulForumsLibrary.Manager
             }
         }
 
-        private void ParseThreadHtml(ForumThreadEntity threadEntity, HtmlNode threadNode)
+        public void ParseThreadHtml(ForumThreadEntity threadEntity, HtmlNode threadNode)
         {
             try
             {

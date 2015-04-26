@@ -9,6 +9,8 @@ namespace AwfulForumsLibrary.Interface
     {
         bool IsNetworkAvailable { get; }
         Task<WebManager.Result> GetData(string uri);
+
+        Task<WebManager.Result> PostArchiveData(string uri, string data);
         Task<CookieContainer> PostData(string uri, string data);
         Task<HttpResponseMessage> PostFormData(string uri, MultipartFormDataContent form);
     }
