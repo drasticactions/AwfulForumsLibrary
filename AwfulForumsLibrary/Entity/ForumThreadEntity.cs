@@ -32,6 +32,8 @@ namespace AwfulForumsLibrary.Entity
 
         public bool IsSticky { get; set; }
 
+        public bool IsNotified { get; set; }
+
         public bool IsLocked { get; set; }
 
         public bool IsAnnouncement { get; set; }
