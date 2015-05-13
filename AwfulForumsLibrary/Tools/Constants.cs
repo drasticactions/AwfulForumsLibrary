@@ -140,5 +140,6 @@ i＼_}／￣|＿_／≡＝
 　　　　　　　　　　～❤ 
 　　　　　　　　　　　　～❤";
         public const string HtmlHeader = "<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\"/><link href=\"ms-appx-web:///Assets/Website/CSS/forum-thread.css\" media=\"all\" rel=\"stylesheet\" type=\"text/css\"><link rel=\"stylesheet\" type=\"text/css\" href=\"ms-appx-web:///Assets/Website/CSS/bbcode.css\"><link rel=\"stylesheet\" type=\"text/css\" href=\"ms-appx-web:///Assets/Website/CSS/ui-light-new.css\"><meta name=\"MSSmartTagsPreventParsing\" content=\"TRUE\"><meta http-equiv=\"X-UA-Compatible\" content=\"chrome=1\"><script type=\"text/javascript\" src=\"ms-appx-web:///Assets/jquery.min.js\"></script><script type=\"text/javascript\">disable_thread_coloring = true;</script><script type=\"text/javascript\" src=\"ms-appx-web:///Assets/forumThread.js\"></script><style type=\"text/css\"></style></head>";
+        public static string OpenInBrowser = "OpenInBrowser";
     }
 }
