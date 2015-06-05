@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using SQLite.Net.Attributes;
 using SQLiteNetExtensions.Attributes;
 
@@ -25,6 +26,8 @@ namespace AwfulForumsLibrary.Entity
         /// </summary>
         /// 
         [OneToMany(CascadeOperations = CascadeOperation.All)]
+
+        [JsonIgnore]
         public List<ForumEntity> ForumList { get; set; }
     }
 }
