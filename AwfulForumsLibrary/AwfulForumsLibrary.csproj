@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Entity\BbCodeCategoryEntity.cs" />
+    <Compile Include="Entity\DraftEntity.cs" />
     <Compile Include="Entity\ForumCategoryEntity.cs" />
     <Compile Include="Entity\ForumEntity.cs" />
     <Compile Include="Entity\ForumPostEntity.cs" />
