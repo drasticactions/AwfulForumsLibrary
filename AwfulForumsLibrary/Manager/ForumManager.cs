@@ -105,7 +105,7 @@ namespace AwfulForumsLibrary.Manager
             return forumGroupList;
         }
 
-        private ForumEntity AddDebugForum()
+        public static ForumEntity AddDebugForum()
         {
             var forum = new ForumEntity()
             {
@@ -117,7 +117,7 @@ namespace AwfulForumsLibrary.Manager
             return forum;
         }
 
-        private void SetForumId(ForumEntity forumEntity)
+        private static void SetForumId(ForumEntity forumEntity)
         {
             if (string.IsNullOrEmpty(forumEntity.Location))
             {
