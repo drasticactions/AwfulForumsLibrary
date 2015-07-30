@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.NetworkInformation;
+using System.Text;
 using System.Threading.Tasks;
 using AwfulForumsLibrary.Exceptions;
 using AwfulForumsLibrary.Interface;
@@ -126,7 +127,7 @@ namespace AwfulForumsLibrary.Manager
                 throw new WebManagerException(string.Format("Failed to load page: {0}", string.Concat(result.StatusCode, Environment.NewLine, url)));
             }
             Stream stream = await result.Content.ReadAsStreamAsync();
-            using (var reader = new StreamReader(stream))
+            using (var reader = new StreamReader(stream, Encoding.GetEncoding("ISO-8859-1")))
             {
                 string html = reader.ReadToEnd();
                 var doc = new HtmlDocument();
