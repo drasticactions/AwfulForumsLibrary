@@ -8,6 +8,8 @@
 
         public const string BookmarkDefault = "BookmarkDefault";
 
+        public const string ThemeDefault = "ThemeDefault";
+
         public const string DarkMode = "DarkMode";
 
         public const string AutoRefresh = "AutoRefresh";
