@@ -19,8 +19,10 @@ namespace AwfulForumsLibrary.Entity
 
         public int TotalPages { get; set; }
 
-        [PrimaryKey]
         public int ForumId { get; set; }
+
+        [PrimaryKey]
+        public int Id { get; set; }
 
         [ForeignKey(typeof(ForumCategoryEntity))]
         public int ForumCategoryEntityId { get; set; }
