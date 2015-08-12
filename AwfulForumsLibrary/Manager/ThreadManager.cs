@@ -279,9 +279,9 @@ namespace AwfulForumsLibrary.Manager
         private void ParseThreadAuthor(ForumThreadEntity threadEntity, HtmlNode threadNode)
         {
             threadEntity.Author =
-               threadNode.Descendants("td")
-                   .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("author"))
-                   .InnerText;
+                WebUtility.HtmlDecode(threadNode.Descendants("td")
+                    .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("author"))
+                    .InnerText);
         }
 
         private void ParseThreadRepliesSinceLastOpened(ForumThreadEntity threadEntity, HtmlNode threadNode)

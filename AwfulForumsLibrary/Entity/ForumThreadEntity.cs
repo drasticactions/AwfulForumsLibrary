@@ -53,6 +53,8 @@ namespace AwfulForumsLibrary.Entity
         public string ScrollToPostString { get; set; }
 
         [PrimaryKey]
+        public int Id { get; set; }
+
         public long ThreadId { get; set; }
 
         [ForeignKey(typeof(ForumEntity))]
