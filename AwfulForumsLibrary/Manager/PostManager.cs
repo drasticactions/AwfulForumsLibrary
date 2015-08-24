@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AwfulForumsLibrary.Entity;
@@ -67,6 +68,25 @@ namespace AwfulForumsLibrary.Manager
 
             try
             {
+
+                try
+                {
+                    HtmlNode pollNode =
+  doc.DocumentNode.Descendants("form")
+      .FirstOrDefault(node => node.GetAttributeValue("action", string.Empty).Equals("poll.php"));
+
+                    if (pollNode != null)
+                    {
+                        forumThread.Poll = ParsePoll(doc);
+                    }
+
+                }
+                catch (Exception)
+                {
+                    
+                    // Failed to get poll. Ignore and continue...
+                }
+
                 HtmlNode threadNode =
                    doc.DocumentNode.Descendants("div")
                        .FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("thread"));
@@ -88,6 +108,31 @@ namespace AwfulForumsLibrary.Manager
             }
 
             return forumThreadPosts;
+        }
+
+        public PollGroupEntity ParsePoll(HtmlDocument pollNode)
+        {
+            var pollid =
+               Convert.ToInt32(pollNode.DocumentNode.Descendants("input")
+                    .First(node => node.GetAttributeValue("name", string.Empty).Equals("pollid")).GetAttributeValue("value", string.Empty));
+
+            var tableRows = pollNode.DocumentNode.Descendants("table").First(node => node.GetAttributeValue("id", string.Empty).Equals("main_full")).Descendants("tr").ToArray();
+            var pollEntities = new List<PollEntity>(tableRows.Length - 2);
+            for (var i = 1; i <= tableRows.Length - 1; i++)
+            {
+                pollEntities.Add(new PollEntity
+                {
+                    Id = i,
+                    Title = tableRows[i].InnerText.WithoutNewLines()
+                });
+            }
+
+            return new PollGroupEntity()
+            {
+                Title = WebUtility.HtmlDecode(tableRows[0].InnerText),
+                Id = pollid,
+                PollList = pollEntities
+            };
         }
 
         public void ParsePost(ForumPostEntity post, HtmlNode postNode)

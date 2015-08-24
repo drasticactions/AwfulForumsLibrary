@@ -70,6 +70,9 @@ namespace AwfulForumsLibrary.Entity
         public PlatformIdentifier PlatformIdentifier { get; set; } 
 
         [Ignore]
+        public PollGroupEntity Poll { get; set; }
+
+        [Ignore]
         public ObservableCollection<ForumPostEntity> ForumPosts { get; set; }
         public bool IsPrivateMessage { get; set; }
     }
