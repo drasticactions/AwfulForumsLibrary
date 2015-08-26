@@ -2,6 +2,10 @@
 {
     public class Constants
     {
+        public const string BackgroundEnable = "BackgroundEnable";
+
+        public const string BookmarkNotifications = "BookmarkNotifications";
+
         public const string BookmarkBackground = "BookmarkBackground";
 
         public const string BookmarkStartup = "BookmarkStartup";
