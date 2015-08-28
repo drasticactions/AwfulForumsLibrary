@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using AwfulForumsLibrary.Tools;
 using HtmlAgilityPack;
 
 namespace AwfulForumsLibrary.Entity
@@ -32,7 +34,7 @@ namespace AwfulForumsLibrary.Entity
 
         public string ApprovedBy { get; private set; }
 
-        public long ThreadId { get; private set; }
+        public int PostId { get; private set; }
 
         public long HorribleJerkId { get; private set; }
 
@@ -75,13 +77,13 @@ namespace AwfulForumsLibrary.Entity
             List<HtmlNode> rapSheetData = rapSheetNode.Descendants("td").ToList();
             GetPunishmentType(rapSheetData[0].Descendants("b").FirstOrDefault().InnerText);
             Link =
-                rapSheetData[0].Descendants("b")
+                WebUtility.HtmlDecode(rapSheetData[0].Descendants("b")
                     .FirstOrDefault()
                     .Descendants("a")
                     .FirstOrDefault()
-                    .GetAttributeValue("href", string.Empty);
+                    .GetAttributeValue("href", string.Empty));
             Date = GetDateTime(rapSheetData[1].InnerText);
-
+            PostId = GetPostId(Link);
             HorribleJerk = rapSheetData[2].Descendants("a").FirstOrDefault().InnerText;
             HorribleJerkId =
                 Convert.ToInt64(
@@ -103,5 +105,16 @@ namespace AwfulForumsLibrary.Entity
                         [3]);
         }
 
+        private int GetPostId(string txt)
+        {
+            var re1 = ".*?";
+            var re2 = "(\\d+)";
+
+            var r = new Regex(re1 + re2, RegexOptions.IgnoreCase | RegexOptions.Singleline);
+            var m = r.Match(txt);
+            if (!m.Success) return 0;
+            var int1 = m.Groups[1].ToString();
+            return Convert.ToInt32(int1);
+        }
     }
 }

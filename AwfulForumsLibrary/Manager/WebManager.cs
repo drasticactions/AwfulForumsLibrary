@@ -119,20 +119,22 @@ namespace AwfulForumsLibrary.Manager
                 UseCookies = true,
                 UseDefaultCredentials = false
             };
-            var httpClient = new HttpClient(handler);
-            httpClient.DefaultRequestHeaders.IfModifiedSince = DateTimeOffset.UtcNow;
-            HttpResponseMessage result = await httpClient.GetAsync(url);
-            if (!result.IsSuccessStatusCode)
+            using (var httpClient = new HttpClient(handler))
             {
-                throw new WebManagerException(string.Format("Failed to load page: {0}", string.Concat(result.StatusCode, Environment.NewLine, url)));
-            }
-            Stream stream = await result.Content.ReadAsStreamAsync();
-            using (var reader = new StreamReader(stream, Encoding.GetEncoding("ISO-8859-1")))
-            {
-                string html = reader.ReadToEnd();
-                var doc = new HtmlDocument();
-                doc.LoadHtml(html);
-                return new Result(doc, result.RequestMessage.RequestUri.AbsoluteUri);
+                httpClient.DefaultRequestHeaders.IfModifiedSince = DateTimeOffset.UtcNow;
+                HttpResponseMessage result = await httpClient.GetAsync(url);
+                if (!result.IsSuccessStatusCode)
+                {
+                    throw new WebManagerException(string.Format("Failed to load page: {0}", string.Concat(result.StatusCode, Environment.NewLine, url)));
+                }
+                Stream stream = await result.Content.ReadAsStreamAsync();
+                using (var reader = new StreamReader(stream, Encoding.GetEncoding("ISO-8859-1")))
+                {
+                    string html = reader.ReadToEnd();
+                    var doc = new HtmlDocument();
+                    doc.LoadHtml(html);
+                    return new Result(doc, result.RequestMessage.RequestUri.AbsoluteUri);
+                }
             }
         }
 
