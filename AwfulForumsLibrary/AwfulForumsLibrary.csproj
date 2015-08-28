@@ -43,6 +43,7 @@
     <Compile Include="Entity\ForumReplyEntity.cs" />
     <Compile Include="Entity\ForumThreadEntity.cs" />
     <Compile Include="Entity\ForumUserEntity.cs" />
+    <Compile Include="Entity\ForumUserRapSheetEntity.cs" />
     <Compile Include="Entity\ImgurEntity.cs" />
     <Compile Include="Entity\NewPrivateMessageEntity.cs" />
     <Compile Include="Entity\NewThreadEntity.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="Manager\PostIconManager.cs" />
     <Compile Include="Manager\PostManager.cs" />
     <Compile Include="Manager\PrivateMessageManager.cs" />
+    <Compile Include="Manager\RapSheetManager.cs" />
     <Compile Include="Manager\ReplyManager.cs" />
     <Compile Include="Manager\SaclopediaManager.cs" />
     <Compile Include="Manager\SearchManager.cs" />

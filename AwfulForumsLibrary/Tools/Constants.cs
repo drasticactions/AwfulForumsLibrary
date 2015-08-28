@@ -36,9 +36,9 @@
 
         public const string UserProfile = "member.php?action=getinfo&userid={0}";
 
-        public const string UserRapSheet = "banlist.php?userid={0}";
+        public const string UserRapSheet = BaseUrl + "banlist.php?userid={0}";
 
-        public const string RapSheet = "banlist.php?";
+        public const string RapSheet = BaseUrl + "banlist.php?pagenumber={0}";
 
         public const string ForumListPage = "http://forums.somethingawful.com/forumdisplay.php?forumid=48";
 
