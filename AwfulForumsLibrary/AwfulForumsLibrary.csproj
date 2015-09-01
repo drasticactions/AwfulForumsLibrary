@@ -51,6 +51,7 @@
     <Compile Include="Entity\PostIconCategoryEntity.cs" />
     <Compile Include="Entity\PostIconEntity.cs" />
     <Compile Include="Entity\PrivateMessageEntity.cs" />
+    <Compile Include="Entity\RankEntity.cs" />
     <Compile Include="Entity\SaclopediaEntity.cs" />
     <Compile Include="Entity\SaclopediaNavigationEntity.cs" />
     <Compile Include="Entity\SaclopediaNavigationTopicEntity.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Manager\PostIconManager.cs" />
     <Compile Include="Manager\PostManager.cs" />
     <Compile Include="Manager\PrivateMessageManager.cs" />
+    <Compile Include="Manager\RankManager.cs" />
     <Compile Include="Manager\RapSheetManager.cs" />
     <Compile Include="Manager\ReplyManager.cs" />
     <Compile Include="Manager\SaclopediaManager.cs" />

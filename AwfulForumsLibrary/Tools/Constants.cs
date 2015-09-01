@@ -40,6 +40,10 @@
 
         public const string RapSheet = BaseUrl + "banlist.php?pagenumber={0}";
 
+        public const string StatsBase = BaseUrl + "stats.php?statid={0}&all=#jump";
+
+        public const string StatsSpecificBase = BaseUrl + "stats.php?statid={0}&t_forumid=1{1}&all=#jump";
+
         public const string ForumListPage = "http://forums.somethingawful.com/forumdisplay.php?forumid=48";
 
         public const string ForumPage = BaseUrl + "forumdisplay.php?forumid={0}";
