@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Entity\BbCodeCategoryEntity.cs" />
+    <Compile Include="Entity\BuddyListEntity.cs" />
     <Compile Include="Entity\DraftEntity.cs" />
     <Compile Include="Entity\ForumCategoryEntity.cs" />
     <Compile Include="Entity\ForumEntity.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="Interface\IWebManager.cs" />
     <Compile Include="Manager\AuthenticationManager.cs" />
     <Compile Include="Manager\BbCodeManager.cs" />
+    <Compile Include="Manager\BuddyListManager.cs" />
     <Compile Include="Manager\ForumManager.cs" />
     <Compile Include="Manager\ForumUserManager.cs" />
     <Compile Include="Manager\LocalStorageManager.cs" />

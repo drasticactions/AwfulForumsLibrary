@@ -96,7 +96,7 @@
 
         public const string ShowPost = BaseUrl + "showthread.php?action=showpost&postid={0}";
 
-        public const string UserCp = "usercp.php?";
+        public const string UserCp = BaseUrl + "usercp.php?";
 
         public const string HtmlFile = "{0}.html";
 
