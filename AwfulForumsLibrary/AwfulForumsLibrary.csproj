@@ -49,6 +49,7 @@
     <Compile Include="Entity\NewPrivateMessageEntity.cs" />
     <Compile Include="Entity\NewThreadEntity.cs" />
     <Compile Include="Entity\PollGroupEntity.cs" />
+    <Compile Include="Entity\PostElementsEntity.cs" />
     <Compile Include="Entity\PostIconCategoryEntity.cs" />
     <Compile Include="Entity\PostIconEntity.cs" />
     <Compile Include="Entity\PrivateMessageEntity.cs" />

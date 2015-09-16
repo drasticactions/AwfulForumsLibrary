@@ -4,6 +4,8 @@
     {
         public ForumUserEntity User { get; set; }
 
+        public PostElementsEntity PostElements { get; set; }
+
         public string PostDate { get; set; }
 
         public string PostReportLink { get; set; }

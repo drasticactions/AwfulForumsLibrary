@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
@@ -46,6 +47,68 @@ namespace AwfulForumsLibrary.Manager
             {
                 throw new Exception("Error getting post", ex );
             }
+        }
+
+        public async Task<List<ForumPostEntity>> GetSimpleThreadPostsAsync(ForumThreadEntity forumThread)
+        {
+            string url = forumThread.Location;
+
+            if (forumThread.CurrentPage > 0)
+            {
+                url = forumThread.Location + string.Format(Constants.PageNumber, forumThread.CurrentPage);
+            }
+            else if (forumThread.HasBeenViewed)
+            {
+                url = forumThread.Location + Constants.GotoNewPost;
+            }
+
+            var forumThreadPosts = new List<ForumPostEntity>();
+
+            var threadManager = new ThreadManager();
+            var doc = await threadManager.GetThreadInfo(forumThread, url);
+
+            try
+            {
+
+                try
+                {
+                    HtmlNode pollNode =
+  doc.DocumentNode.Descendants("form")
+      .FirstOrDefault(node => node.GetAttributeValue("action", string.Empty).Equals("poll.php"));
+
+                    if (pollNode != null)
+                    {
+                        forumThread.Poll = ParsePoll(doc);
+                    }
+
+                }
+                catch (Exception)
+                {
+
+                    // Failed to get poll. Ignore and continue...
+                }
+
+                HtmlNode threadNode =
+                   doc.DocumentNode.Descendants("div")
+                       .FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("thread"));
+
+                foreach (
+                   HtmlNode postNode in
+                       threadNode.Descendants("table")
+                           .Where(node => node.GetAttributeValue("class", string.Empty).Contains("post")))
+                {
+                    var post = new ForumPostEntity();
+                    ParsePost(post, postNode);
+                    forumThreadPosts.Add(post);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to parse thread posts {ex.Message}");
+            }
+
+            return forumThreadPosts;
         }
 
         public async Task<List<ForumPostEntity>> GetThreadPostsAsync(ForumThreadEntity forumThread)
@@ -104,7 +167,7 @@ namespace AwfulForumsLibrary.Manager
             }
             catch (Exception ex)
             {
-                throw new Exception(string.Format("Failed to parse thread posts {0}", ex.Message));
+                throw new Exception($"Failed to parse thread posts {ex.Message}");
             }
 
             return forumThreadPosts;
@@ -135,7 +198,7 @@ namespace AwfulForumsLibrary.Manager
             };
         }
 
-        public void ParsePost(ForumPostEntity post, HtmlNode postNode)
+        public void ParsePost(ForumPostEntity post, HtmlNode postNode, bool isSimple = false)
         {
             post.User = ForumUserManager.ParseNewUserFromPost(postNode);
 
@@ -171,8 +234,29 @@ namespace AwfulForumsLibrary.Manager
 
             var postBodyNode = postNode.Descendants("td")
                 .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postbody"));
-            this.FixQuotes(postBodyNode);
-            post.PostHtml = postBodyNode.InnerHtml;
+            if (!isSimple)
+            {
+                this.FixQuotes(postBodyNode);
+                post.PostHtml = postBodyNode.InnerHtml;
+            }
+            else
+            {
+                var postElement = new PostElementsEntity {InnerText = Regex.Replace(postBodyNode.InnerText, "<!--.*?-->", string.Empty, RegexOptions.Multiline), ImageUrls = new List<string>()};
+                var images = postBodyNode.Descendants("img").Where(node => node.GetAttributeValue("class", string.Empty) != "av");
+                foreach (var image in images)
+                {
+                    var src = image.Attributes["src"].Value;
+                    if (src.Contains("somethingawful.com"))
+                        continue;
+                    if (src.Contains("emoticons"))
+                        continue;
+                    if (src.Contains("smilies"))
+                        continue;
+                    postElement.ImageUrls.Add(image.Attributes["src"].Value);
+                }
+                post.PostElements = postElement;
+            }
+
             HtmlNode profileLinksNode =
                     postNode.Descendants("td")
                         .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postlinks"));
