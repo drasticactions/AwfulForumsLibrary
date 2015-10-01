@@ -60,7 +60,7 @@ namespace AwfulForumsLibrary.Manager
             {
                 try
                 {
-                    user.DateJoined = DateTime.Parse(dateTimeNode.InnerHtml);
+                    user.DateJoined = string.IsNullOrEmpty(dateTimeNode.InnerHtml) ? DateTime.UtcNow : DateTime.Parse(dateTimeNode.InnerHtml);
                 }
                 catch (Exception)
                 {
@@ -97,10 +97,25 @@ namespace AwfulForumsLibrary.Manager
                 .GetAttributeValue("class", string.Empty)
                 .Split('-');
 
-            if (splitString.Length >= 2)
+            try
             {
-                user.Id =
-                    Convert.ToInt64(splitString[1]);
+                if (splitString.Length >= 2)
+                {
+                    user.Id =
+                        Convert.ToInt64(splitString[1]);
+                }
+            }
+            catch (Exception)
+            {
+              
+            }
+            if (user.Id <= 0)
+            {
+                if (splitString.Length >= 3)
+                {
+                    user.Id =
+                        Convert.ToInt64(splitString[2]);
+                }
             }
             // Remove the UserInfo node after we are done with it, because
             // some forums (FYAD) use it in the body of posts. Why? Who knows!11!1
