@@ -156,7 +156,7 @@ namespace AwfulForumsLibrary.Manager
 
             pmEntity.Title =
                titleNode
-                    .InnerText.Replace("\n", string.Empty);
+                    .InnerText.Replace("\n", string.Empty).Trim();
 
             string titleHref = titleNode.Descendants("a").FirstOrDefault().GetAttributeValue("href", string.Empty).Replace("&amp;", "&");
 
