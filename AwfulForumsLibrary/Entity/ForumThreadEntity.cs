@@ -52,6 +52,8 @@ namespace AwfulForumsLibrary.Entity
 
         public string ScrollToPostString { get; set; }
 
+        public string LoggedInUserName { get; set; }
+
         [PrimaryKey]
         public int Id { get; set; }
 

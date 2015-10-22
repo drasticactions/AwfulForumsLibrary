@@ -131,6 +131,21 @@ namespace AwfulForumsLibrary.Manager
 
             try
             {
+                var loggedInUser =
+                    doc.DocumentNode.Descendants("div")
+                        .FirstOrDefault(node => node.GetAttributeValue("id", string.Empty) == "loggedinusername");
+                if (loggedInUser != null)
+                {
+                    forumThread.LoggedInUserName = loggedInUser.InnerText;
+                }
+            }
+            catch (Exception ex)
+            {
+                
+            }
+
+            try
+            {
 
                 try
                 {
