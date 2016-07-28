@@ -19,7 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AwfulForumsLibrary\AwfulForumsLibrary.csproj">
       <Name>AwfulForumsLibrary</Name>
-      <Project>{02db53cb-7539-4ec0-a7cf-36070640193f}</Project>
+      <Project>{7ac33700-35ef-4a65-9a79-ec38db0e3373}</Project>
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
