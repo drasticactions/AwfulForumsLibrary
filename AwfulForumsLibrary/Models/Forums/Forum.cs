@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using SQLite.Net.Attributes;
 
 namespace AwfulForumsLibrary.Models.Forums
 {
@@ -18,8 +17,7 @@ namespace AwfulForumsLibrary.Models.Forums
         public int TotalPages { get; set; }
 
         public int ForumId { get; set; }
-
-        [PrimaryKey, AutoIncrement]
+       
         public int Id { get; set; }
 
         public int ForumCategoryEntityId { get; set; }
