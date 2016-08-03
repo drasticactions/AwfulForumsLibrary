@@ -52,7 +52,7 @@ namespace AwfulForumsLibrary.Managers
 
                 var query = Extensions.ParseQueryString(new Uri(url).Query);
 
-                if (query["pagenumber"] != null)
+                if (query.ContainsKey("pagenumber"))
                 {
                     forumThread.CurrentPage = Convert.ToInt32(query["pagenumber"]);
                 }
@@ -408,7 +408,8 @@ namespace AwfulForumsLibrary.Managers
                 {
                     string urlHref = lastPageNode.GetAttributeValue("href", string.Empty);
                     var query = Extensions.ParseQueryString(new Uri(EndPoints.BaseUrl + urlHref).Query);
-                    threadEntity.TotalPages = Convert.ToInt32(query["pagenumber"]);
+                    if(query.ContainsKey("pagenumber"))
+                        threadEntity.TotalPages = Convert.ToInt32(query["pagenumber"]);
                 }
 
                 var pageSelector = pageNavigationNode.Descendants("select").FirstOrDefault();
