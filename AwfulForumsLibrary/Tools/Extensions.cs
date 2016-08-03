@@ -10,9 +10,9 @@ namespace AwfulForumsLibrary.Tools
 {
     public static class Extensions
     {
-        public static NameValueCollection ParseQueryString(string s)
+        public static Dictionary<string, string> ParseQueryString(string s)
         {
-            NameValueCollection nvc = new NameValueCollection();
+            var nvc = new Dictionary<string, string>();
 
             // remove anything other than query string from url
             if (s.Contains("?"))
