@@ -35,7 +35,7 @@ namespace AwfulForumsLibrary.Managers
             }
             catch (Exception exception)
             {
-                throw new Exception("Error parsing thread", exception);
+                return doc;
             }
 
             try
@@ -59,7 +59,7 @@ namespace AwfulForumsLibrary.Managers
             }
             catch (Exception exception)
             {
-                throw new Exception("Error parsing thread", exception);
+                return doc;
             }
 
             return doc;
@@ -92,8 +92,15 @@ namespace AwfulForumsLibrary.Managers
 
             var forumThreadPosts = new List<Post>();
             var forumThread = new Thread();
-            var doc = await GetThreadInfo(forumThread, url);
             var result = new Result(true);
+            var doc = await GetThreadInfo(forumThread, url);
+            if (
+                   doc.DocumentNode.InnerText.Contains(
+                       "Sorry, you must be a registered forums member to view this page."))
+            {
+                ErrorHandler.CreateErrorObject(result, "", "", "paywall", true);
+                return result;
+            }
             try
             {
 
@@ -151,7 +158,17 @@ namespace AwfulForumsLibrary.Managers
             }
             catch (Exception ex)
             {
-                throw new Exception($"Failed to parse thread posts {ex.Message}");
+                if (
+                    doc.DocumentNode.InnerText.Contains(
+                        "Sorry, you must be a registered forums member to view this page."))
+                {
+                    ErrorHandler.CreateErrorObject(result, ex.Message, ex.StackTrace, "paywall", true);
+                }
+                else
+                {
+                    ErrorHandler.CreateErrorObject(result, ex.Message, ex.StackTrace);
+                }
+                return result;
             }
             result.ResultJson = JsonConvert.SerializeObject(new ThreadPosts()
             {
