@@ -84,6 +84,7 @@ namespace AwfulForumsLibrary.Managers
                     authResult.Error = "Cookie Container not set.";
                 }
                 var queryString = Extensions.ParseQueryString(response.RequestMessage.RequestUri.Query);
+                if (!queryString.ContainsKey("loginerror")) return authResult;
                 if (queryString["loginerror"] == null) return authResult;
                 switch (queryString["loginerror"])
                 {
