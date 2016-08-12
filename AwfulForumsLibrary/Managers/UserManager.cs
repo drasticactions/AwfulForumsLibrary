@@ -83,6 +83,14 @@ namespace AwfulForumsLibrary.Managers
             {
                 user.AvatarLink = avatarImage.GetAttributeValue("src", string.Empty);
             }
+
+            if (avatarTitle != null)
+            {
+                var testHtml = avatarTitle.InnerHtml;
+                testHtml = testHtml.Replace("bbc-center", "");
+                if (avatarImage != null) testHtml = testHtml.Replace(avatarImage.OuterHtml, "");
+                user.AvatarHtml = testHtml;
+            }
             var userIdNode = postNode.DescendantsAndSelf("td")
                 .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("userinfo")) ??
                              postNode.DescendantsAndSelf("div")

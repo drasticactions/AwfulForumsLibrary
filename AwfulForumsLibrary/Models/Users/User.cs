@@ -10,6 +10,8 @@ namespace AwfulForumsLibrary.Models.Users
 
         public string AvatarTitle { get; set; }
 
+        public string AvatarHtml { get; set; }
+
         public DateTime DateJoined { get; set; }
 
         public string ProfileLink { get; set; }
