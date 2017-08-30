@@ -1,4 +1,8 @@
-﻿namespace AwfulForumsLibrary.Models.Messages
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace AwfulForumsLibrary.Models.Messages
 {
     public class PrivateMessage
     {

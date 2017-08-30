@@ -1,5 +1,8 @@
 ﻿using AwfulForumsLibrary.Models.Web;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace AwfulForumsLibrary.Tools
 {
@@ -8,7 +11,7 @@ namespace AwfulForumsLibrary.Tools
         public static Result CreateErrorObject(Result result, string reason, string stacktrace, string type = "", bool isPaywall = false)
         {
             result.IsSuccess = false;
-            result.Type = typeof (Error).ToString();
+            result.Type = typeof(Error).ToString();
             var error = new Error()
             {
                 Type = type,

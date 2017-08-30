@@ -1,6 +1,9 @@
-﻿using System;
+﻿using HtmlAgilityPack;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -10,6 +13,29 @@ namespace AwfulForumsLibrary.Tools
 {
     public static class Extensions
     {
+		public static string RemoveAutoplayGif(string html)
+		{
+			var doc2 = new HtmlDocument();
+			doc2.LoadHtml(html);
+			HtmlNode bodyNode = doc2.DocumentNode.Descendants("body").FirstOrDefault();
+			var images = bodyNode.Descendants("img").Where(node => node.GetAttributeValue("class", string.Empty) != "av");
+			foreach (var image in images)
+			{
+				var src = image.Attributes["src"].Value;
+				if (Path.GetExtension(src) != ".gif")
+					continue;
+				if (src.Contains("somethingawful.com"))
+					continue;
+				if (src.Contains("emoticons"))
+					continue;
+				if (src.Contains("smilies"))
+					continue;
+				image.Attributes.Add("data-gifffer", image.Attributes["src"].Value);
+				image.Attributes.Remove("src");
+			}
+			html = doc2.DocumentNode.OuterHtml;
+			return html;
+		}
         public static Dictionary<string, string> ParseQueryString(string s)
         {
             var nvc = new Dictionary<string, string>();

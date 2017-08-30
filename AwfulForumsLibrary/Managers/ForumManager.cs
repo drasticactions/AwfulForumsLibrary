@@ -1,23 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using AwfulForumsLibrary.Exceptions;
-using AwfulForumsLibrary.Interfaces;
+﻿using HtmlAgilityPack;
 using AwfulForumsLibrary.Models.Forums;
 using AwfulForumsLibrary.Models.Web;
 using AwfulForumsLibrary.Tools;
-using HtmlAgilityPack;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace AwfulForumsLibrary.Managers
 {
     public class ForumManager
     {
-        private readonly IWebManager _webManager;
+        private readonly WebManager _webManager;
 
-        public ForumManager(IWebManager webManager)
+        public ForumManager(WebManager webManager)
         {
             _webManager = webManager;
         }
@@ -36,7 +35,7 @@ namespace AwfulForumsLibrary.Managers
             if (!result.IsSuccess) return result;
 
             // Got the forum list HTML!
-            result.Type = typeof (Category).ToString();
+            result.Type = typeof(Category).ToString();
 
             if (!parseToJson)
                 return result;
@@ -63,7 +62,7 @@ namespace AwfulForumsLibrary.Managers
                     .FirstOrDefault(node => node.GetAttributeValue("name", String.Empty).Equals("forumid"));
             if (forumNode == null)
             {
-                throw new ForumListParsingFailedException("Could not download main forum list.");
+                throw new Exception("Could not download main forum list.");
             }
 
             try
@@ -89,8 +88,8 @@ namespace AwfulForumsLibrary.Managers
                             Name = forumName.Trim(),
                             Location = String.Format(EndPoints.ForumPage, value),
                             IsSubforum = isSubforum,
-                            ForumCategory = forumCategory,
-                            ForumCategoryEntityId = forumCategory.Id
+                            Category = forumCategory,
+                            CategoryId = forumCategory.Id
                         };
                         SetForumId(forumSubCategory);
                         if (!isSubforum)
@@ -99,7 +98,7 @@ namespace AwfulForumsLibrary.Managers
                         }
                         else
                         {
-                            forumSubCategory.ParentForumId = parentId;
+                             // forumSubCategory.ParentForumId = parentId;
                         }
 
                         forumCategory.ForumList.Add(forumSubCategory);

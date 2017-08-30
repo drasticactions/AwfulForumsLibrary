@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using AwfulForumsLibrary.Models.Posts;
+﻿using AwfulForumsLibrary.Models.Posts;
 using AwfulForumsLibrary.Models.Threads;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Text;
 
 namespace AwfulForumsLibrary.Models.Replies
 {

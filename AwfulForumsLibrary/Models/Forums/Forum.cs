@@ -1,4 +1,7 @@
 ﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace AwfulForumsLibrary.Models.Forums
 {
@@ -17,17 +20,13 @@ namespace AwfulForumsLibrary.Models.Forums
         public int TotalPages { get; set; }
 
         public int ForumId { get; set; }
-       
-        public int Id { get; set; }
 
-        public int ForumCategoryEntityId { get; set; }
-
-        public int ParentForumId { get; set; }
+        public int CategoryId { get; set; }
 
         [JsonIgnore]
-        public Forum ParentForum { get; set; }
+        public Category Category { get; set; }
 
-        [JsonIgnore]
-        public Category ForumCategory { get; set; }
+        public bool IsBookmarks { get; set; }
+        public int Order { get; set; }
     }
 }

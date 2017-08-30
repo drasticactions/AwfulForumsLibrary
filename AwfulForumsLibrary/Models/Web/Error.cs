@@ -1,4 +1,8 @@
-﻿namespace AwfulForumsLibrary.Models.Web
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace AwfulForumsLibrary.Models.Web
 {
     public class Error
     {

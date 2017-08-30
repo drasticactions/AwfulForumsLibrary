@@ -1,12 +1,13 @@
 ﻿using AwfulForumsLibrary.Models.Users;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace AwfulForumsLibrary.Models.Posts
 {
     public class Post
     {
         public User User { get; set; }
-
-        public PostElements PostElements { get; set; }
 
         public string PostDate { get; set; }
 

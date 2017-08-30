@@ -1,25 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using AwfulForumsLibrary.Interfaces;
-using AwfulForumsLibrary.Models.Polls;
+﻿using HtmlAgilityPack;
 using AwfulForumsLibrary.Models.Posts;
 using AwfulForumsLibrary.Models.Threads;
 using AwfulForumsLibrary.Models.Web;
 using AwfulForumsLibrary.Tools;
-using HtmlAgilityPack;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace AwfulForumsLibrary.Managers
 {
     public class PostManager
     {
-        private readonly IWebManager _webManager;
+        private readonly WebManager _webManager;
 
-        public PostManager(IWebManager webManager)
+        public PostManager(WebManager webManager)
         {
             _webManager = webManager;
         }
@@ -65,12 +64,12 @@ namespace AwfulForumsLibrary.Managers
             return doc;
         }
 
-        public async Task<Result> GetUsersPostsInThreadAsync(string location, int userId, int currentPage, bool hasBeenViewed = false, bool goToPageOverride = false, bool isSimple = false)
+        public async Task<Result> GetUsersPostsInThreadAsync(string location, int userId, int currentPage, bool hasBeenViewed = false, bool goToPageOverride = false)
         {
-            return await GetThreadPostsAsync(location += $"&userid={userId}", currentPage, hasBeenViewed, goToPageOverride, isSimple);
+            return await GetThreadPostsAsync(location += $"&userid={userId}", currentPage, hasBeenViewed, goToPageOverride);
         }
 
-        public async Task<Result> GetThreadPostsAsync(string location, int currentPage, bool hasBeenViewed = false, bool goToPageOverride = false, bool isSimple = false)
+        public async Task<Result> GetThreadPostsAsync(string location, int currentPage, bool hasBeenViewed = false, bool goToPageOverride = false)
         {
             string url = location;
             if (goToPageOverride)
@@ -106,14 +105,14 @@ namespace AwfulForumsLibrary.Managers
 
                 try
                 {
-  //                  HtmlNode pollNode =
-  //doc.DocumentNode.Descendants("form")
-  //    .FirstOrDefault(node => node.GetAttributeValue("action", string.Empty).Equals("poll.php"));
+                    //                  HtmlNode pollNode =
+                    //doc.DocumentNode.Descendants("form")
+                    //    .FirstOrDefault(node => node.GetAttributeValue("action", string.Empty).Equals("poll.php"));
 
-  //                  if (pollNode != null)
-  //                  {
-  //                      forumThread.Poll = ParsePoll(doc);
-  //                  }
+                    //                  if (pollNode != null)
+                    //                  {
+                    //                      forumThread.Poll = ParsePoll(doc);
+                    //                  }
 
                 }
                 catch (Exception)
@@ -129,10 +128,10 @@ namespace AwfulForumsLibrary.Managers
                 foreach (
                    HtmlNode postNode in
                        threadNode.Descendants("table")
-                           .Where(node => node.GetAttributeValue("class", string.Empty).Contains("post") && !string.IsNullOrEmpty(node.GetAttributeValue("data-idx", string.Empty))))
+                           .Where(node => node.GetAttributeValue("class", string.Empty).Contains("post")))
                 {
                     var post = new Post();
-                    ParsePost(post, postNode, isSimple);
+                    ParsePost(post, postNode);
                     var postBodyNode =
                         postNode.Descendants("td")
                             .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postbody"));
@@ -210,32 +209,7 @@ namespace AwfulForumsLibrary.Managers
             }
         }
 
-        public PollGroup ParsePoll(HtmlDocument pollNode)
-        {
-            var pollid =
-               Convert.ToInt32(pollNode.DocumentNode.Descendants("input")
-                    .First(node => node.GetAttributeValue("name", string.Empty).Equals("pollid")).GetAttributeValue("value", string.Empty));
-
-            var tableRows = pollNode.DocumentNode.Descendants("table").First(node => node.GetAttributeValue("id", string.Empty).Equals("main_full")).Descendants("tr").ToArray();
-            var pollEntities = new List<PollItem>(tableRows.Length - 2);
-            for (var i = 1; i <= tableRows.Length - 1; i++)
-            {
-                pollEntities.Add(new PollItem
-                {
-                    Id = i,
-                    Title = tableRows[i].InnerText.WithoutNewLines()
-                });
-            }
-
-            return new PollGroup()
-            {
-                Title = WebUtility.HtmlDecode(tableRows[0].InnerText),
-                Id = pollid,
-                PollList = pollEntities
-            };
-        }
-
-        public void ParsePost(Post post, HtmlNode postNode, bool isSimple = false)
+        public void ParsePost(Post post, HtmlNode postNode)
         {
             post.User = UserManager.ParseNewUserFromPost(postNode);
 
@@ -271,15 +245,8 @@ namespace AwfulForumsLibrary.Managers
 
             var postBodyNode = postNode.Descendants("td")
                 .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Equals("postbody"));
-            if (!isSimple)
-            {
-                this.FixQuotes(postBodyNode);
-                post.PostHtml = postBodyNode.InnerHtml;
-            }
-            else
-            {
-                CreatePostElements(postBodyNode, post);
-            }
+            this.FixQuotes(postBodyNode);
+            post.PostHtml = postBodyNode.InnerHtml;
 
             HtmlNode profileLinksNode =
                     postNode.Descendants("td")
@@ -295,42 +262,6 @@ namespace AwfulForumsLibrary.Managers
             post.User.IsCurrentUserPost =
                 profileLinksNode.Descendants("img")
                     .FirstOrDefault(node => node.GetAttributeValue("alt", string.Empty).Equals("Edit")) != null;
-        }
-
-        private void CreatePostElements(HtmlNode postBodyNode, Post post)
-        {
-            // Fix EditedBy tag manually :(
-            postBodyNode.InnerHtml += "</p>";
-            var quoteNodes =
-                    postBodyNode.Descendants("div")
-                        .Where(node => node.GetAttributeValue("class", string.Empty) == "bbc-block").ToList();
-            for (var i = 0; i < quoteNodes.Count(); i++)
-            {
-                quoteNodes[i].RemoveAll();
-            }
-            var editNodes =
-                postBodyNode.Descendants("p")
-                    .Where(node => node.GetAttributeValue("class", string.Empty).Contains("editedby")).ToList();
-            for (var i = 0; i < editNodes.Count(); i++)
-            {
-                editNodes[i].RemoveAll();
-            }
-            var postText = Regex.Replace(postBodyNode.InnerText, "<!--.*?-->", string.Empty, RegexOptions.Multiline);
-            postText = Regex.Replace(postText, @"\r\n?|\n", string.Empty, RegexOptions.Multiline).Trim();
-            var postElement = new PostElements() { InnerText = postText, ImageUrls = new List<string>() };
-            var images = postBodyNode.Descendants("img").Where(node => node.GetAttributeValue("class", string.Empty) != "av");
-            foreach (var image in images)
-            {
-                var src = image.Attributes["src"].Value;
-                if (src.Contains("somethingawful.com"))
-                    continue;
-                if (src.Contains("emoticons"))
-                    continue;
-                if (src.Contains("smilies"))
-                    continue;
-                postElement.ImageUrls.Add(image.Attributes["src"].Value);
-            }
-            post.PostElements = postElement;
         }
 
         private void FixQuotes(HtmlNode postNode)
@@ -370,7 +301,7 @@ namespace AwfulForumsLibrary.Managers
             }
 
             var threadIdNode = threadDocument.DocumentNode.Descendants("body").First();
-            threadEntity.ThreadId = Convert.ToInt64(threadIdNode.GetAttributeValue("data-thread", string.Empty));
+            threadEntity.ThreadId = Convert.ToInt32(threadIdNode.GetAttributeValue("data-thread", string.Empty));
 
             var usernameNode = threadDocument.DocumentNode.Descendants("div").FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Equals("loggedinusername"));
             threadEntity.LoggedInUserName = usernameNode != null ? usernameNode.InnerText : string.Empty;
@@ -408,7 +339,7 @@ namespace AwfulForumsLibrary.Managers
                 {
                     string urlHref = lastPageNode.GetAttributeValue("href", string.Empty);
                     var query = Extensions.ParseQueryString(new Uri(EndPoints.BaseUrl + urlHref).Query);
-                    if(query.ContainsKey("pagenumber"))
+                    if (query.ContainsKey("pagenumber"))
                         threadEntity.TotalPages = Convert.ToInt32(query["pagenumber"]);
                 }
 

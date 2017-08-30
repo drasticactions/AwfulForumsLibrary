@@ -1,3 +1,5 @@
+﻿using AwfulForumsLibrary.Models.Web;
+using AwfulForumsLibrary.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,13 +7,16 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using AwfulForumsLibrary.Models.Web;
-using AwfulForumsLibrary.Tools;
 
 namespace AwfulForumsLibrary.Managers
 {
     public class AuthenticationManager
     {
+        /// <summary>
+        /// Logs the user out of the forums. Requires their auth cookies.
+        /// </summary>
+        /// <param name="cookies">The cookies from the user.</param>
+        /// <returns>A AuthResult</returns>
         public async Task<AuthResult> LogoutAsync(CookieContainer cookies)
         {
             var cookieContainer = new CookieContainer();
@@ -115,7 +120,5 @@ namespace AwfulForumsLibrary.Managers
                 return authResult;
             }
         }
-
-    
     }
 }

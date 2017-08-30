@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using HtmlAgilityPack;
+using System;
+using System.Collections.Generic;
 using System.Linq;
-using HtmlAgilityPack;
+using System.Text;
 
 namespace AwfulForumsLibrary.Models.Smilies
 {
@@ -11,7 +13,7 @@ namespace AwfulForumsLibrary.Models.Smilies
             SmileList = new List<Smile>();
         }
 
-        public virtual ICollection<Smile> SmileList { get; set; }
+        public List<Smile> SmileList { get; set; }
 
         public string Name { get; set; }
     }

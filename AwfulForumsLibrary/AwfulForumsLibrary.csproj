@@ -1,118 +1,14 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7AC33700-35EF-4A65-9A79-EC38DB0E3373}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AwfulForumsLibrary</RootNamespace>
-    <AssemblyName>AwfulForumsLibrary</AssemblyName>
-    <DefaultLanguage>en-US</DefaultLanguage>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Compile Include="Exceptions\ForumListParsingFailedException.cs" />
-    <Compile Include="Exceptions\LoginFailedException.cs" />
-    <Compile Include="Exceptions\WebManagerException.cs" />
-    <Compile Include="Interfaces\IWebManager.cs" />
-    <Compile Include="Managers\AuthenticationManager.cs" />
-    <Compile Include="Managers\ForumManager.cs" />
-    <Compile Include="Managers\PostIconManager.cs" />
-    <Compile Include="Managers\PostManager.cs" />
-    <Compile Include="Managers\PrivateMessageManager.cs" />
-    <Compile Include="Managers\ReplyManager.cs" />
-    <Compile Include="Managers\SearchManager.cs" />
-    <Compile Include="Managers\SmileManager.cs" />
-    <Compile Include="Managers\ThreadManager.cs" />
-    <Compile Include="Managers\UserManager.cs" />
-    <Compile Include="Managers\WebManager.cs" />
-    <Compile Include="Models\Forums\Category.cs" />
-    <Compile Include="Models\Forums\Forum.cs" />
-    <Compile Include="Models\Messages\NewPrivateMessage.cs" />
-    <Compile Include="Models\Messages\PrivateMessage.cs" />
-    <Compile Include="Models\Polls\PollItem.cs" />
-    <Compile Include="Models\Polls\PollGroup.cs" />
-    <Compile Include="Models\PostIcons\PostIcon.cs" />
-    <Compile Include="Models\PostIcons\PostIconCategory.cs" />
-    <Compile Include="Models\Posts\Post.cs" />
-    <Compile Include="Models\Posts\PostElements.cs" />
-    <Compile Include="Models\Posts\ThreadPosts.cs" />
-    <Compile Include="Models\Replies\ForumReply.cs" />
-    <Compile Include="Models\Search\Search.cs" />
-    <Compile Include="Models\Smilies\SmileCategory.cs" />
-    <Compile Include="Models\Threads\NewThread.cs" />
-    <Compile Include="Models\Threads\Thread.cs" />
-    <Compile Include="Models\Threads\ThreadCommand.cs" />
-    <Compile Include="Models\Users\User.cs" />
-    <Compile Include="Models\Web\AuthResult.cs" />
-    <Compile Include="Models\Web\Error.cs" />
-    <Compile Include="Models\Web\Result.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tools\CookieSerializer.cs" />
-    <Compile Include="Tools\EndPoints.cs" />
-    <Compile Include="Tools\ErrorHandler.cs" />
-    <Compile Include="Tools\Extensions.cs" />
+    <PackageReference Include="Fody" Version="2.1.2" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.5.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="PropertyChanged.Fody" Version="2.1.4" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="HtmlAgilityPack, Version=1.4.9.5, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\HtmlAgilityPack.1.4.9.5\lib\portable-net45+netcore45+wpa81+wp8+MonoAndroid+MonoTouch\HtmlAgilityPack.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

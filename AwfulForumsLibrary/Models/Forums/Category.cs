@@ -1,14 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace AwfulForumsLibrary.Models.Forums
 {
     public class Category
     {
-        public Category()
-        {
-            ForumList = new List<Forum>();
-        }
-
         public string Name { get; set; }
 
         public string Location { get; set; }
@@ -17,9 +14,6 @@ namespace AwfulForumsLibrary.Models.Forums
 
         public int Order { get; set; }
 
-        /// <summary>
-        ///     The forums that belong to that category (Ex. GBS, FYAD)
-        /// </summary>
         public List<Forum> ForumList { get; set; }
     }
 }

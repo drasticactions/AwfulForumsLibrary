@@ -1,4 +1,7 @@
 ﻿using AwfulForumsLibrary.Models.PostIcons;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace AwfulForumsLibrary.Models.Threads
 {

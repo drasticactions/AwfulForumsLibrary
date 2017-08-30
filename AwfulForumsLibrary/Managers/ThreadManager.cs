@@ -1,28 +1,27 @@
-﻿using System;
+﻿using HtmlAgilityPack;
+using AwfulForumsLibrary.Models.Forums;
+using AwfulForumsLibrary.Models.Posts;
+using AwfulForumsLibrary.Models.Threads;
+using AwfulForumsLibrary.Models.Web;
+using AwfulForumsLibrary.Tools;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
-using AwfulForumsLibrary.Exceptions;
-using AwfulForumsLibrary.Interfaces;
-using AwfulForumsLibrary.Models.Forums;
-using AwfulForumsLibrary.Models.Posts;
-using AwfulForumsLibrary.Models.Threads;
-using AwfulForumsLibrary.Models.Web;
-using AwfulForumsLibrary.Tools;
-using HtmlAgilityPack;
-using Newtonsoft.Json;
 
 namespace AwfulForumsLibrary.Managers
 {
     public class ThreadManager
     {
-        private readonly IWebManager _webManager;
+        private readonly WebManager _webManager;
 
-        public ThreadManager(IWebManager webManager)
+        public ThreadManager(WebManager webManager)
         {
             _webManager = webManager;
         }
@@ -192,8 +191,6 @@ namespace AwfulForumsLibrary.Managers
             }
         }
 
-
-
         public async Task<Result> GetForumThreadsAsync(string forumLocation, int forumId, int page, bool parseToJson = true)
         {
             string url = forumLocation + string.Format(EndPoints.PageNumber, page);
@@ -250,7 +247,7 @@ namespace AwfulForumsLibrary.Managers
 
         public async Task<Result> MarkPostAsLastReadAs(long threadId, int index)
         {
-           return await _webManager.GetData(string.Format(EndPoints.LastRead, index, threadId));
+            return await _webManager.GetData(string.Format(EndPoints.LastRead, index, threadId));
         }
 
         private void ParseHasSeenThread(Thread threadEntity, HtmlNode threadNode)
@@ -396,7 +393,7 @@ namespace AwfulForumsLibrary.Managers
                                     titleNode.GetAttributeValue("href", string.Empty) + EndPoints.PerPage;
 
             threadEntity.ThreadId =
-                Convert.ToInt64(
+                Convert.ToInt32(
                     titleNode
                         .GetAttributeValue("href", string.Empty)
                         .Split('=')[1]);
@@ -447,7 +444,7 @@ namespace AwfulForumsLibrary.Managers
             }
             catch (Exception exception)
             {
-                throw new ForumListParsingFailedException($"Failed to parse 'Has Seen' element {exception}");
+                throw new Exception($"Failed to parse 'Has Seen' element {exception}");
             }
 
             try
@@ -456,7 +453,7 @@ namespace AwfulForumsLibrary.Managers
             }
             catch (Exception exception)
             {
-                throw new ForumListParsingFailedException($"Failed to parse 'Thread/Announcement' element {exception}");
+                throw new Exception($"Failed to parse 'Thread/Announcement' element {exception}");
             }
 
             try
@@ -465,7 +462,7 @@ namespace AwfulForumsLibrary.Managers
             }
             catch (Exception exception)
             {
-                throw new ForumListParsingFailedException($"Failed to parse 'Killed By' element {exception}");
+                throw new Exception($"Failed to parse 'Killed By' element {exception}");
             }
 
             try
@@ -474,7 +471,7 @@ namespace AwfulForumsLibrary.Managers
             }
             catch (Exception exception)
             {
-                throw new ForumListParsingFailedException($"Failed to parse 'Is Thread Sticky' element {exception}");
+                throw new Exception($"Failed to parse 'Is Thread Sticky' element {exception}");
             }
 
             try
@@ -483,7 +480,7 @@ namespace AwfulForumsLibrary.Managers
             }
             catch (Exception exception)
             {
-                throw new ForumListParsingFailedException($"Failed to parse 'Thread Locked' element {exception}");
+                throw new Exception($"Failed to parse 'Thread Locked' element {exception}");
             }
 
             try
@@ -492,7 +489,7 @@ namespace AwfulForumsLibrary.Managers
             }
             catch (Exception exception)
             {
-                throw new ForumListParsingFailedException(
+                throw new Exception(
                     $"Failed to parse 'Can mark as thread as unread' element {exception}");
             }
 
@@ -502,7 +499,7 @@ namespace AwfulForumsLibrary.Managers
             }
             catch (Exception exception)
             {
-                throw new ForumListParsingFailedException($"Failed to parse 'Has Been Viewed' element {exception}");
+                throw new Exception($"Failed to parse 'Has Been Viewed' element {exception}");
             }
 
             try
@@ -511,7 +508,7 @@ namespace AwfulForumsLibrary.Managers
             }
             catch (Exception exception)
             {
-                throw new ForumListParsingFailedException($"Failed to parse 'Thread Author' element {exception}");
+                throw new Exception($"Failed to parse 'Thread Author' element {exception}");
             }
 
             try
@@ -520,7 +517,7 @@ namespace AwfulForumsLibrary.Managers
             }
             catch (Exception exception)
             {
-                throw new ForumListParsingFailedException(
+                throw new Exception(
                     $"Failed to parse 'Replies since last opened' element {exception}");
             }
 
@@ -530,7 +527,7 @@ namespace AwfulForumsLibrary.Managers
             }
             catch (Exception exception)
             {
-                throw new ForumListParsingFailedException($"Failed to parse 'Reply count' element {exception}");
+                throw new Exception($"Failed to parse 'Reply count' element {exception}");
             }
 
             try
@@ -539,7 +536,7 @@ namespace AwfulForumsLibrary.Managers
             }
             catch (Exception exception)
             {
-                throw new ForumListParsingFailedException($"Failed to parse 'View Count' element {exception}");
+                throw new Exception($"Failed to parse 'View Count' element {exception}");
             }
 
             try
@@ -548,7 +545,7 @@ namespace AwfulForumsLibrary.Managers
             }
             catch (Exception exception)
             {
-                throw new ForumListParsingFailedException($"Failed to parse 'Thread Rating' element {exception}");
+                throw new Exception($"Failed to parse 'Thread Rating' element {exception}");
             }
 
             try
@@ -557,7 +554,7 @@ namespace AwfulForumsLibrary.Managers
             }
             catch (Exception exception)
             {
-                throw new ForumListParsingFailedException($"Failed to parse 'Total Pages' element {exception}");
+                throw new Exception($"Failed to parse 'Total Pages' element {exception}");
             }
 
             try
@@ -566,7 +563,7 @@ namespace AwfulForumsLibrary.Managers
             }
             catch (Exception exception)
             {
-                throw new ForumListParsingFailedException($"Failed to parse 'Thread Id' element {exception}");
+                throw new Exception($"Failed to parse 'Thread Id' element {exception}");
             }
 
             try
@@ -575,7 +572,7 @@ namespace AwfulForumsLibrary.Managers
             }
             catch (Exception exception)
             {
-                throw new ForumListParsingFailedException($"Failed to parse 'Thread Icon' element {exception}");
+                throw new Exception($"Failed to parse 'Thread Icon' element {exception}");
             }
 
             try
@@ -584,11 +581,9 @@ namespace AwfulForumsLibrary.Managers
             }
             catch (Exception exception)
             {
-                throw new ForumListParsingFailedException($"Failed to parse 'Store thread icon' element {exception}");
+                throw new Exception($"Failed to parse 'Store thread icon' element {exception}");
             }
 
         }
-
-        
     }
 }

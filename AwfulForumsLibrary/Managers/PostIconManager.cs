@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AwfulForumsLibrary.Interfaces;
-using AwfulForumsLibrary.Models.PostIcons;
-using AwfulForumsLibrary.Tools;
 using HtmlAgilityPack;
+using AwfulForumsLibrary.Tools;
+using AwfulForumsLibrary.Models.PostIcons;
 
 namespace AwfulForumsLibrary.Managers
 {
     public class PostIconManager
     {
-        private readonly IWebManager _webManager;
+        private readonly WebManager _webManager;
 
-        public PostIconManager(IWebManager webManager)
+        public PostIconManager(WebManager webManager)
         {
             _webManager = webManager;
         }

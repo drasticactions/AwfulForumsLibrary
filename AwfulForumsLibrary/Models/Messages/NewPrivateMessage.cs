@@ -1,4 +1,7 @@
 ﻿using AwfulForumsLibrary.Models.PostIcons;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace AwfulForumsLibrary.Models.Messages
 {
@@ -12,4 +15,5 @@ namespace AwfulForumsLibrary.Models.Messages
 
         public string Body { get; set; }
     }
+
 }

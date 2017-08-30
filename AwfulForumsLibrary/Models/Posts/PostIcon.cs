@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AwfulForumsLibrary.Models.PostIcons
+namespace AwfulForumsLibrary.Models.Posts
 {
     public class PostIcon
     {
@@ -13,3 +13,4 @@ namespace AwfulForumsLibrary.Models.PostIcons
         public string Title { get; set; }
     }
 }
+

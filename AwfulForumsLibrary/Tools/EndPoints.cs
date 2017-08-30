@@ -1,7 +1,17 @@
-﻿namespace AwfulForumsLibrary.Tools
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace AwfulForumsLibrary.Tools
 {
     public class EndPoints
     {
+        public const string UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36 Edge/15.15063";
+
+        public const string SavedForum = "SavedForum";
+
+        public const string SavedThread = "SavedThread";
+
         public const string GotoNewPost = "&goto=newpost";
 
         public const string PerPage = "&perpage=40";

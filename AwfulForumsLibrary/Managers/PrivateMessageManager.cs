@@ -6,21 +6,20 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using AwfulForumsLibrary.Interfaces;
-using AwfulForumsLibrary.Models.Messages;
-using AwfulForumsLibrary.Models.Posts;
-using AwfulForumsLibrary.Models.Web;
-using AwfulForumsLibrary.Tools;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
+using AwfulForumsLibrary.Models.Web;
+using AwfulForumsLibrary.Tools;
+using AwfulForumsLibrary.Models.Posts;
+using AwfulForumsLibrary.Models.Messages;
 
 namespace AwfulForumsLibrary.Managers
 {
     public class PrivateMessageManager
     {
-        private readonly IWebManager _webManager;
+        private readonly WebManager _webManager;
 
-        public PrivateMessageManager(IWebManager webManager)
+        public PrivateMessageManager(WebManager webManager)
         {
             _webManager = webManager;
         }
@@ -35,13 +34,16 @@ namespace AwfulForumsLibrary.Managers
             {
                 {new StringContent("dosend"), "action"},
                 {new StringContent(newPrivateMessageEntity.Receiver), "touser"},
-                {new StringContent(newPrivateMessageEntity.Icon.Id.ToString(CultureInfo.InvariantCulture)), "iconid"},
                 {new StringContent(Extensions.HtmlEncode(newPrivateMessageEntity.Title)), "title"},
                 {new StringContent(Extensions.HtmlEncode(newPrivateMessageEntity.Body)), "message"},
                 {new StringContent("yes"), "parseurl"},
                 {new StringContent("yes"), "parseurl"},
                 {new StringContent("Send Message"), "submit"}
             };
+				if (newPrivateMessageEntity.Icon != null)
+				{
+					form.Add(new StringContent(newPrivateMessageEntity.Icon.Id.ToString(CultureInfo.InvariantCulture)), "iconid");
+				}
             }
             catch (Exception ex)
             {
@@ -50,7 +52,7 @@ namespace AwfulForumsLibrary.Managers
             }
             try
             {
-                
+
                 result = await _webManager.PostFormData(EndPoints.NewPrivateMessageBase, form);
                 return result;
             }

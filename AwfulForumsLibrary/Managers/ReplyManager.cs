@@ -5,21 +5,20 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using AwfulForumsLibrary.Interfaces;
-using AwfulForumsLibrary.Models.Posts;
-using AwfulForumsLibrary.Models.Replies;
-using AwfulForumsLibrary.Models.Web;
-using AwfulForumsLibrary.Tools;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
+using AwfulForumsLibrary.Models.Replies;
+using AwfulForumsLibrary.Tools;
+using AwfulForumsLibrary.Models.Posts;
+using AwfulForumsLibrary.Models.Web;
 
 namespace AwfulForumsLibrary.Managers
 {
     public class ReplyManager
     {
-        private readonly IWebManager _webManager;
+        private readonly WebManager _webManager;
 
-        public ReplyManager(IWebManager webManager)
+        public ReplyManager(WebManager webManager)
         {
             _webManager = webManager;
         }
@@ -230,7 +229,7 @@ namespace AwfulForumsLibrary.Managers
 
                 HtmlNode previewNode =
                     replyNodes.First(node => node.GetAttributeValue("class", "").Equals("inner postbody"));
-                var post = new Post {PostHtml = previewNode.OuterHtml};
+                var post = new Post { PostHtml = previewNode.OuterHtml };
                 result.ResultJson = JsonConvert.SerializeObject(post);
                 return result;
             }
@@ -306,7 +305,7 @@ namespace AwfulForumsLibrary.Managers
         {
             string url = string.Format(EndPoints.QuoteBase, postId);
             var result = await _webManager.GetData(url);
-            HtmlDocument doc =new HtmlDocument();
+            HtmlDocument doc = new HtmlDocument();
             doc.LoadHtml(result.ResultHtml);
 
             HtmlNode[] textAreaNodes = doc.DocumentNode.Descendants("textarea").ToArray();

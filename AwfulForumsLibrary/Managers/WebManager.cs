@@ -1,15 +1,15 @@
-﻿using System;
+﻿using AwfulForumsLibrary.Models.Web;
+using AwfulForumsLibrary.Tools;
+using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using AwfulForumsLibrary.Interfaces;
-using AwfulForumsLibrary.Models.Web;
 
 namespace AwfulForumsLibrary.Managers
 {
-    public class WebManager : IWebManager
+    public class WebManager
     {
         public WebManager(CookieContainer authenticationCookie = null)
         {
@@ -39,6 +39,7 @@ namespace AwfulForumsLibrary.Managers
             }
             using (var client = new HttpClient(handler))
             {
+                client.DefaultRequestHeaders.Add("User-Agent", EndPoints.UserAgent);
                 client.DefaultRequestHeaders.IfModifiedSince = DateTimeOffset.UtcNow;
                 var result = await client.GetAsync(new Uri(uri));
                 var stream = await result.Content.ReadAsStreamAsync();
@@ -69,6 +70,7 @@ namespace AwfulForumsLibrary.Managers
             }
             using (var client = new HttpClient(handler))
             {
+                client.DefaultRequestHeaders.Add("User-Agent", EndPoints.UserAgent);
                 client.DefaultRequestHeaders.IfModifiedSince = DateTimeOffset.UtcNow;
                 var result = await client.PostAsync(new Uri(uri), data);
                 var stream = await result.Content.ReadAsStreamAsync();
@@ -78,25 +80,6 @@ namespace AwfulForumsLibrary.Managers
                     return new Result(result.IsSuccessStatusCode, html);
                 }
             }
-        }
-
-        public async Task<CookieContainer> PostDataLogin(string url, string data)
-        {
-            var uri = new Uri(url);
-            var request = (HttpWebRequest)WebRequest.Create(url);
-            request.Accept = Accept;
-            request.CookieContainer = new CookieContainer();
-            request.Method = "POST";
-            request.ContentType = PostContentType;
-            request.UseDefaultCredentials = false;
-
-            using (var writer = new StreamWriter(await request.GetRequestStreamAsync()))
-            {
-                writer.Write(data);
-            }
-
-            WebResponse response = await request.GetResponseAsync();
-            return request.CookieContainer;
         }
 
         public async Task<Result> PostFormData(string uri, MultipartFormDataContent form)
@@ -113,6 +96,7 @@ namespace AwfulForumsLibrary.Managers
             }
             using (var client = new HttpClient(handler))
             {
+                client.DefaultRequestHeaders.Add("User-Agent", EndPoints.UserAgent);
                 var result = await client.PostAsync(new Uri(uri), form);
                 var stream = await result.Content.ReadAsStreamAsync();
                 using (var reader = new StreamReader(stream, Encoding.GetEncoding("ISO-8859-1")))

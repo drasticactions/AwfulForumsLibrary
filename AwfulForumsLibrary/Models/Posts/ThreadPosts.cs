@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
-using AwfulForumsLibrary.Models.Threads;
+﻿using AwfulForumsLibrary.Models.Threads;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace AwfulForumsLibrary.Models.Posts
 {
@@ -7,6 +9,6 @@ namespace AwfulForumsLibrary.Models.Posts
     {
         public Thread ForumThread { get; set; }
 
-        public List<Post> Posts { get; set; } 
+        public List<Post> Posts { get; set; }
     }
 }

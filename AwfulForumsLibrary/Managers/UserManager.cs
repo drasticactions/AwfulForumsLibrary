@@ -1,22 +1,20 @@
-﻿using System;
+﻿using HtmlAgilityPack;
+using AwfulForumsLibrary.Models.Users;
+using AwfulForumsLibrary.Tools;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
-using AwfulForumsLibrary.Interfaces;
-using AwfulForumsLibrary.Models.Users;
-using AwfulForumsLibrary.Models.Web;
-using AwfulForumsLibrary.Tools;
-using HtmlAgilityPack;
-using Newtonsoft.Json;
 
 namespace AwfulForumsLibrary.Managers
 {
     public class UserManager
     {
-        private readonly IWebManager _webManager;
+        private readonly WebManager _webManager;
 
-        public UserManager(IWebManager webManager)
+        public UserManager(WebManager webManager)
         {
             _webManager = webManager;
         }
@@ -127,12 +125,12 @@ namespace AwfulForumsLibrary.Managers
             return user;
         }
 
-        public async Task<Result> GetUserFromProfilePage(long userId, bool parseToJson = true)
+        public async Task<User> GetUserFromProfilePage(long userId, bool parseToJson = true)
         {
             string url = EndPoints.BaseUrl + string.Format(EndPoints.UserProfile, userId);
             var result = await _webManager.GetData(url);
             if (!result.IsSuccess || !parseToJson)
-                return result;
+                throw new Exception($"Failed to parse user: {result.ResultHtml}");
 
             try
             {
@@ -147,15 +145,12 @@ namespace AwfulForumsLibrary.Managers
 
                 HtmlNode threadNode = doc.DocumentNode.Descendants("td")
                     .FirstOrDefault(node => node.GetAttributeValue("id", string.Empty).Contains("thread"));
-                var userEntity = ParseFromUserProfile(profileNode, threadNode);
-                result.ResultJson = JsonConvert.SerializeObject(userEntity);
+                return ParseFromUserProfile(profileNode, threadNode);
             }
             catch (Exception ex)
             {
-                ErrorHandler.CreateErrorObject(result, "Failed to parse user", ex.StackTrace, ex.GetType().FullName);
+                throw new Exception("Failed to parse user", ex);
             }
-
-            return result;
         }
 
         private User ParseFromUserProfile(HtmlNode profileNode, HtmlNode threadNode)

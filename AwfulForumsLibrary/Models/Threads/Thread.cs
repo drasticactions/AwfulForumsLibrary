@@ -1,14 +1,20 @@
-﻿using AwfulForumsLibrary.Models.Polls;
+﻿using AwfulForumsLibrary.Models.Forums;
+using AwfulForumsLibrary.Models.Posts;
+using PropertyChanged;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace AwfulForumsLibrary.Models.Threads
 {
+    [AddINotifyPropertyChangedInterface]
     public class Thread
     {
         public string Name { get; set; }
 
         public string Location { get; set; }
 
-        public string ImageIconUrl { get; set; }
+        public string ImageIconUrl { get; set; } = "";
 
         public string ImageIconLocation { get; set; }
 
@@ -54,16 +60,27 @@ namespace AwfulForumsLibrary.Models.Threads
 
         public string LoggedInUserName { get; set; }
 
-        public long ThreadId { get; set; }
+        public int ThreadId { get; set; }
 
         public int ForumId { get; set; }
+
+        public Forum ForumEntity { get; set; }
 
         public bool HasSeen { get; set; }
 
         public bool IsBookmark { get; set; }
 
-        public PollGroup Poll { get; set; }
+        public string Html { get; set; }
 
         public bool IsPrivateMessage { get; set; }
+
+        public int OrderNumber { get; set; }
+
+        public List<Post> Posts { get; set; }
+
+        public Thread Clone()
+        {
+            return MemberwiseClone() as Thread;
+        }
     }
 }
