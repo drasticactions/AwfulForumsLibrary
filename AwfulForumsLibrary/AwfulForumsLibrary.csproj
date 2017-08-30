@@ -2,12 +2,21 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Description>Access the Something Awful forums%28http://forums.somethingawful.com%29 in your .NET Project! Ain%27t Life Grand!</Description>
+    <Authors>drasticactions</Authors>
+    <PackageVersion>0.7.0.0</PackageVersion>
+    <Title>Awful Forums Library</Title>
+    <Owners>drasticactions</Owners>
+    <Summary>Access the Something Awful forums%28http://forums.somethingawful.com%29 in your .NET Project! Ain%27t Life Grand!</Summary>
+    <PackageReleaseNotes>Replaced the older Awful code with newer, .NET Standard 2.0, stuff.</PackageReleaseNotes>
+    <PackageId>AwfulForumsLibrary</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Fody" Version="2.1.2" />
     <PackageReference Include="HtmlAgilityPack" Version="1.5.1" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="NuGet.Build.Packaging" Version="0.2.0-dev-build0008" />
     <PackageReference Include="PropertyChanged.Fody" Version="2.1.4" />
   </ItemGroup>
 
