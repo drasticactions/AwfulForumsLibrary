@@ -32,7 +32,7 @@ namespace AwfulForumsLibrary.Managers
             {
                 ParseFromThread(forumThread, doc);
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 return doc;
             }
@@ -56,7 +56,7 @@ namespace AwfulForumsLibrary.Managers
                     forumThread.CurrentPage = Convert.ToInt32(query["pagenumber"]);
                 }
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 return doc;
             }
