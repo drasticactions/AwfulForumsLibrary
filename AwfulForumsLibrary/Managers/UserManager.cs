@@ -36,7 +36,7 @@ namespace AwfulForumsLibrary.Managers
                 .FirstOrDefault(node => node.GetAttributeValue("class", string.Empty).Contains("author"))
                 .GetAttributeValue("class", string.Empty);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //Debug.WriteLine("Error getting roles", ex);
                 // This "should" never fail, but... yeah. I'm a dumb dumb :(
